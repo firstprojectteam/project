@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: bitcamp04
+Build-Jdk: 12
+Implementation-Title: b1
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: org.zerock
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
+ -starter-parent/b1
+Created-By: Maven Integration for Eclipse
+
