@@ -4,18 +4,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <%@include file="../includes/header.jsp"%>
-
-<div class="content">
+<div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card">
-				<div class="card-header">
-					<h4 class="card-title ">문의 게시판</h4>
-					<a href="/board/register"  class="btn btn-sm btn-round pull-right">Regist</a>
+				<div class="card-header card-header-info">
+					<h4 class="card-title "><a href="/board/register"  class="btn btn-primary pull-right">게시글 등록</a>문의 게시판</h4>
 					<p class="card-category">질문을 등록하세요 !!</p>
+					
+
 				</div>
 				<div class="card-body">
-					<div class="table">
+					<div class="table-responsive">
 						<table class="table">
 							<thead class=" text-primary">
 								<tr>
@@ -31,14 +31,25 @@
 										<td><c:out value="${vo.writer}" /></td>
 										<td><fmt:formatDate pattern="yyyy-MM-dd"
 												value="${vo.regdate}" /></td>
-
 									</tr>
 								</c:forEach>
-							</tbody>
+							</thead>>
 						</table>
-
+						<ul class="pagination">
+			<c:if test="${pm.prev}">
+				<li class="page-item"><a class="page-link" href='${pm.start-1}'>Previous</a></li>
+			</c:if>
+			<c:forEach begin="${pm.start}" end="${pm.end}" var="idx">
+				<li class="page-item ${pm.current == idx? "active":"" }"><a class="page-link" href='${idx}'>${idx}</a></li>
+			</c:forEach>
+			<c:if test="${pm.next}">
+				<li class="page-item"><a class="page-link" href='${pm.end+1}'>Next</a></li>
+			</c:if>
+		</ul>
+		
+						
 						<!-- modal start-->
-						<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+						<div class="modal fade"id="myModal" tabindex="-1" role="dialog" 
 							aria-labelledby="myModalLabel" aria-hidden="true">
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">
@@ -58,37 +69,47 @@
 							</div>
 						</div>
 						<!-- modal end -->
+						
 					</div>
 				</div>
 			</div>
 		</div>
 
 	</div>
-
-	<script type="text/javascript">
-		$(document)
-				.ready(
-						function() {
-
-							var result = '<c:out value="${result}"/>';
-
-							checkModal(result);
-
-							function checkModal(result) {
-
-								if (result === '') {
-									return;
-								}
-
-								if (parseInt(result) > 0) {
-									$(".modal-body").html(
-											"게시글 " + parseInt(result)
-													+ " 번이 등록되었습니다.");
-								}
-								$("#myModal").modal("show");
-							}
-
-						});
-	</script>
 </div>
+<!-- /.container-fluid -->
+<form id="actionForm" action="/board/list" method="get">
+	<input type="hidden" name="page" value="${cri.page}"> 
+	<input type="hidden" name="amount" value="${cri.amount}">
+</form>
+<script type="text/javascript">
+var actionForm = $("#actionForm");
+$(".page-link").on("click", function(e) {
+	e.preventDefault();
+	var targetPage = $(this).attr("href");
+	console.log("targetPage:" + targetPage);
+	actionForm.find("input[name='page']").val(targetPage);
+	actionForm.submit();
+});
+$(document).ready(function() {
+	 
+	    var result = '<c:out value="${result}"/>';
+	    checkModal(result);
+	        
+	    function checkModal(result) {
+	 
+	      if (result === '') {
+	        return;
+	      }
+	      if (parseInt(result) > 0) {
+	        $(".modal-body").html("게시글 " + parseInt(result) + " 번이 등록되었습니다.");
+	      }
+	       $("#myModal").modal("show");
+	    }    
+	 
+	  });
+
+</script>
+</div>
+
 <%@include file="../includes/footer.jsp"%>

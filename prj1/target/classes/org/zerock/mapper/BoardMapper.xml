@@ -19,14 +19,17 @@
 		#{content}
 		where bno = #{bno}
 	</update>
-
-	<!-- <select id="selectPage" resultType="BoardVO">
-		select * from tbl_board20
-
-		<include refid="searchCri"></include>
+	<select id="selectPage" resultType="BoardVO">
+		select * from tbl_board
 
 		order by bno desc limit #{skip}, #{amount}
-	</select> -->
+	</select>
+	<select id="selectPageCount" resultType="int">
+		select count(bno) from tbl_board
+	</select>
+	<!-- <select id="selectPage" resultType="BoardVO"> select * from tbl_board20 
+		<include refid="searchCri"></include> order by bno desc limit #{skip}, #{amount} 
+		</select> -->
 
 
 </mapper>
