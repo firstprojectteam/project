@@ -24,16 +24,19 @@
 								<td>WRITER</td>
 								<td>REGDATE</td>
 							</tr>
-							<c:forEach items="${list}" var="vo">
-								<tr>
-									<td><c:out value="${vo.bno}" /></td>
-									<td><c:out value="${vo.title}" /></td>
-									<td><c:out value="${vo.writer}" /></td>
-									<td><fmt:formatDate pattern="yyyy-MM-dd"
-											value="${vo.regdate}" /></td>
-								</tr>
-							</c:forEach>
+
 						</thead>
+
+						<c:forEach items="${list}" var="vo">
+							<tr>
+								<td><c:out value="${vo.bno}" /></td>
+								<td><c:out value="${vo.title}" /></td>
+								<td><c:out value="${vo.writer}" /></td>
+								<td><fmt:formatDate pattern="yyyy-MM-dd"
+										value="${vo.regdate}" /></td>
+							</tr>
+						</c:forEach>
+
 					</table>
 					<ul class="pagination">
 						<c:if test="${pm.prev}">

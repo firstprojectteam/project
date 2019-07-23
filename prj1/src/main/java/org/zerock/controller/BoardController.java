@@ -53,4 +53,31 @@ public class BoardController {
 		model.addAttribute("pm", pm);
 		model.addAttribute("list", service.getList(cri));
 	}
+	
+	@GetMapping({"/read","/modify"})
+	public void read( @ModelAttribute("cri") Criteria cri, Model model) {
+		
+		log.info("bno: " + cri.getBno());
+		model.addAttribute("vo", service.get(cri.getBno()));
+		
+	}
+	
+	@PostMapping("/modify")
+	public String modify(BoardVO vo, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
+		service.modify(vo);
+		rttr.addFlashAttribute("result", "Modify");
+		return "redirect:/board/list" + cri.getLink();
+	}
+	
+	@PostMapping("/remove")
+	public String remove(@ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
+		
+		log.info("bno: " + cri.getBno());
+		int count = service.remove(cri.getBno());
+		
+		rttr.addFlashAttribute("result", "Remove");
+		cri.setPage(1);
+		return "redirect:/board/list"+cri.getLink();
+		
+	}
 }

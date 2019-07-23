@@ -23,49 +23,7 @@
             <span class="navbar-toggler-bar navbar-kebab"></span>
             <span class="navbar-toggler-bar navbar-kebab"></span>
           </button>
-          <div class="collapse navbar-collapse justify-content-end" id="navigation">
-            <form>
-              <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <i class="nc-icon nc-zoom-split"></i>
-                  </div>
-                </div>
-              </div>
-            </form>
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link btn-magnify" href="#pablo">
-                  <i class="nc-icon nc-layout-11"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block">Stats</span>
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item btn-rotate dropdown">
-                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="nc-icon nc-bell-55"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block">Some Actions</span>
-                  </p>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link btn-rotate" href="#pablo">
-                  <i class="nc-icon nc-settings-gear-65"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block">Account</span>
-                  </p>
-                </a>
-              </li>
-            </ul>
-          </div>
+         
         </div>
       </nav>
       <!-- End Navbar -->
@@ -81,24 +39,26 @@
 				<div class="card-body">
 					<div class="table">
 						<table class="table">
-							<thead class=" text-primary">
+							<thead class=" text-success">
 								<tr>
 									<td>BNO</td>
 									<td>TITLE</td>
 									<td>WRITER</td>
 									<td>REGDATE</td>
 								</tr>
+								
+								</thead>
 								<c:forEach items="${list}" var="vo">
 									<tr>
 										<td><c:out value="${vo.bno}" /></td>
-										<td><c:out value="${vo.title}" /></td>
+										<td><a href='${vo.bno }' class="view"> <c:out value="${vo.title}" /></a></td>
 										<td><c:out value="${vo.writer}" /></td>
 										<td><fmt:formatDate pattern="yyyy-MM-dd"
 												value="${vo.regdate}" /></td>
 
 									</tr>
 								</c:forEach>
-							</tbody>
+							
 						</table>
 						<ul class="pagination">
 							<c:if test="${pm.prev}">
@@ -121,7 +81,7 @@
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h5 class="modal-title">게시글 등록 완료</h5>
+										<h5 class="modal-title">${result}</h5>
 										<button type="button" class="close" data-dismiss="modal"
 											aria-label="Close">
 											<span aria-hidden="true">&times;</span>
@@ -136,6 +96,8 @@
 							</div>
 						</div>
 						<!-- modal end -->
+						
+						
 					</div>
 				</div>
 			</div>
@@ -155,28 +117,47 @@
 			actionForm.find("input[name='page']").val(targetPage);
 			actionForm.submit();
 		});
+		
+		$(".view").on("click",function(e){
+			e.preventDefault();
+			var targetBno = $(this).attr("href");
+			actionForm.attr("action","/board/read");
+			actionForm.append("<input type='hidden' name='bno' value="+targetBno+">");
+			actionForm.submit();
+		});
 		$(document)
 				.ready(
 						function() {
 
 							var result = '<c:out value="${result}"/>';
+							var result_modify='<c:out value="${result_modify}"/>';
 
 							checkModal(result);
+							console.log(result);
 
 							function checkModal(result) {
 
 								if (result === '') {
 									return;
 								}
+								
+								if (result === "Modify"){
+									$(".modal-body").html(
+											"게시글이 수정되었습니다.");
+								}
+								
+								if (result === "Remove"){
+									$(".modal-body").html(
+											"게시글이 삭제되었습니다.");
+								}
 
 								if (parseInt(result) > 0) {
 									$(".modal-body").html(
-											"게시글 " + parseInt(result)
-													+ " 번이 등록되었습니다.");
+											"게시글이 등록되었습니다.");
 								}
 								$("#myModal").modal("show");
 							}
-
+							
 						});
 	</script>
 </div>
